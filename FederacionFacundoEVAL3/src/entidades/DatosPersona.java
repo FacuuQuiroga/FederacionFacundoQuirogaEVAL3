@@ -1,19 +1,27 @@
 package entidades;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Scanner;
-
+import utils.Datos;
 import utils.Utilidades;
 import validaciones.Validaciones;
+import entidades.ComparadorDocumentacion;
 
-public class DatosPersona {
+public class DatosPersona implements Comparable<DatosPersona> {
 	private long id;
 	private String nombre;
 	private String telefono;
 	private LocalDate fechaNac;
 
-	private Documentacion nifnie; //Examen 2 Ejercicio 3.2
+	private Documentacion nifnie; // Examen 2 Ejercicio 3.2
 
 	public DatosPersona(long id, String nombre, String telefono, LocalDate fechaNac) {
 		super();
@@ -22,8 +30,8 @@ public class DatosPersona {
 		this.telefono = telefono;
 		this.fechaNac = fechaNac;
 	}
-	
-	//Examen 2 Ejercicio 3.2
+
+	// Examen 2 Ejercicio 3.2
 	public DatosPersona(long id, String nombre, String telefono, LocalDate fechaNac, Documentacion nifnie) {
 		super();
 		this.id = id;
@@ -132,6 +140,75 @@ public class DatosPersona {
 		} while (!valido);
 		ret = new DatosPersona(id, nombre, tfn, fecha, doc);
 		return ret;
+	}
+
+	/**
+	 * Ejercicio 1 apartado A examen 9
+	 * 
+	 * @return orden: idPersona | nombre | telefono | fechaNac(dd/MM/YYYY) | NIFNIE
+	 * @author Facu
+	 */
+	public String data() {
+		String ret = "";
+		ret = this.id + "|" + this.nombre + "|" + this.telefono + "|" + this.fechaNac + "|" + this.nifnie.mostrar();
+		return ret;
+	}
+
+	/**
+	 * Ejercicio 1 apartado C examen 9
+	 * 
+	 * @author Facu
+	 */
+	public static void exportarAtletasTxt() {
+		System.out.println("Guardando datos en altetas_alfabetico.txt...");
+
+		File fOut = new File("atletas_alfabetico.txt");
+		FileWriter fw = null;
+		BufferedWriter bw = null;
+
+		try {
+			fw = new FileWriter(fOut);
+			bw = new BufferedWriter(fw);
+
+			LinkedList<DatosPersona> dp = new LinkedList<DatosPersona>();
+			for (int i = 0; i < Datos.ATLETAS.length; i++) {
+				Atleta a = null;
+				DatosPersona dp1 = null;
+				a = Datos.ATLETAS[i];
+				dp1 = a.getPersona();
+				dp.add(dp1);
+				Collections.sort(dp, new ComparadorAlfabetico());
+			}
+			Iterator<DatosPersona> it = dp.iterator();
+
+			while (it.hasNext()) {
+				DatosPersona per =it.next();
+				//imprime bien todos los datos de atleta pero no los guarda en el fichero txt
+				System.out.println(per.data());
+				bw.write(per.data() + "\n");
+
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Ejercicio 2 apartado A examen 9
+	 * @author Facu
+	 */
+	@Override
+	public int compareTo(DatosPersona o) {
+		ComparadorDocumentacion cd = null;
+		
+		if (fechaNac == o.fechaNac)
+			int coso = cd.compare(nifnie, o.nifnie);
+			return coso;
+		else if (fechaNac.compareTo(o.fechaNac)) 
+			return 1;
+		else
+			return -1;
 	}
 
 }
