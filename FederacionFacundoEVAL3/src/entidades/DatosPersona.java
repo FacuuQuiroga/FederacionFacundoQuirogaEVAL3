@@ -1,20 +1,26 @@
 package entidades;
 
 import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
+
+import utils.ConexBD;
 import utils.Datos;
 import utils.Utilidades;
 import validaciones.Validaciones;
 import entidades.ComparadorDocumentacion;
-
 public class DatosPersona implements Comparable<DatosPersona> {
 	private long id;
 	private String nombre;
@@ -177,8 +183,9 @@ public class DatosPersona implements Comparable<DatosPersona> {
 				a = Datos.ATLETAS[i];
 				dp1 = a.getPersona();
 				dp.add(dp1);
-				Collections.sort(dp, new ComparadorAlfabetico());
 			}
+			Collections.sort(dp, new ComparadorAlfabetico());
+
 			Iterator<DatosPersona> it = dp.iterator();
 
 			while (it.hasNext()) {
@@ -200,15 +207,47 @@ public class DatosPersona implements Comparable<DatosPersona> {
 	 */
 	@Override
 	public int compareTo(DatosPersona o) {
-		ComparadorDocumentacion cd = null;
 		
-		if (fechaNac == o.fechaNac)
-			int coso = cd.compare(nifnie, o.nifnie);
-			return coso;
-		else if (fechaNac.compareTo(o.fechaNac)) 
+		if (fechaNac.isAfter(o.fechaNac))
+			return -1;
+		else if (fechaNac.isBefore(o.fechaNac)) 
 			return 1;
 		else
-			return -1;
+			return this.nifnie.compareTo(o.nifnie);
 	}
 
+	/// Examen 9 ejercicio 2-B
+	//@autor luis
+	public static boolean insertarPersonas() {
+		boolean ret = false;
+		Connection conex = ConexBD.establecerConexion();
+		String consultaInsertStr1 = "insert into personas(id, nombre, telefono, fechanac, nifnie) values (?,?,?,?,?)";
+		try {
+			PreparedStatement pstmt = conex.prepareStatement(consultaInsertStr1);
+
+			List<DatosPersona> personas = new LinkedList<>();
+			for (DatosPersona dp : Datos.PERSONAS) {
+				personas.add(dp);
+			}
+			Collections.sort(personas);
+			Iterator<DatosPersona> it = personas.iterator();
+			while (it.hasNext()) {
+				DatosPersona dp = (DatosPersona) it.next();
+				pstmt.setLong(1, dp.getId());
+				pstmt.setString(2, dp.getNombre());
+				pstmt.setString(3, dp.getTelefono());
+				java.sql.Date fechaSQL = java.sql.Date.valueOf(dp.getFechaNac());
+				pstmt.setDate(4, fechaSQL);
+				pstmt.setString(5, dp.getNifnie().mostrar());
+				int resultadoInsercion = pstmt.executeUpdate();
+				ret = (resultadoInsercion != 0);
+			}
+		} catch (SQLException e) {
+			System.out.println("Se ha producido una SQLException:" + e.getMessage());
+			e.printStackTrace();
+			ret = false;
+		}
+
+		return ret;
+	}
 }

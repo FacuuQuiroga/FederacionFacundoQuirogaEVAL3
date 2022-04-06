@@ -2,18 +2,17 @@ package entidades;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import utils.ConexBD;
 
 //Examen 1 Ejercicio 1
-public enum Lugar {
-	GIJONMESTAS(1, "Las Mestas", "Gijon", true), 
-	GIJONCENTRO(2, "Centro ciudad", "Gijon", true),
-	OVIEDOSANFRANCISCO(3, "Parque San Francisco", "Oviedo", true), 
-	AVILESPUERTO(4, "Puerto", "Aviles", true),
-	AVILESPABELLON(5, "Pabellon deportivo Aviles", "Aviles", false), 
-	OVIEDOCENTRO(6, "Centro ciudad", "Oviedo", true);
+public enum Lugar implements operacionesCRUD<Lugar> {
+	GIJONMESTAS(1, "Las Mestas", "Gijon", true), GIJONCENTRO(2, "Centro ciudad", "Gijon", true),
+	OVIEDOSANFRANCISCO(3, "Parque San Francisco", "Oviedo", true), AVILESPUERTO(4, "Puerto", "Aviles", true),
+	AVILESPABELLON(5, "Pabellon deportivo Aviles", "Aviles", false), OVIEDOCENTRO(6, "Centro ciudad", "Oviedo", true);
 
 	private int id;
 	private String nombre;
@@ -50,6 +49,27 @@ public enum Lugar {
 	public boolean isAirelibre() {
 		return airelibre;
 	}
+	/**
+	 * Ejercicio10 examen 10
+	 * 
+	 * @author Facu
+	 */
 
+	@Override
+	public boolean insertarConID(Lugar elemento) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
+	@Override
+	public long insertarSinID(Lugar elemento) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public long buscarPorID(Lugar elemento) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
