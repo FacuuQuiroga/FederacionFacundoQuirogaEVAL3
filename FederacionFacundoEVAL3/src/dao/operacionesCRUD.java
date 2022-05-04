@@ -1,4 +1,6 @@
-package entidades;
+package dao;
+
+import java.util.Collection;
 
 public interface operacionesCRUD<T> {
 	/***
@@ -21,5 +23,26 @@ public interface operacionesCRUD<T> {
 	 */
 	public long insertarSinID(T elemento);
 
-	public long buscarPorID(T elemento);
+	/***
+	 * Funcion que busca en la tabla correspondiente si hay un elemento cuyo id
+	 * coincide con el que se pasa como parámero
+	 * 
+	 * @param id identificador del elemento a buscar
+	 * @return el elemento si existe o null si no
+	 */
+	public T buscarPorID(long id);
+
+	/**
+	 * Funcion que devuelva la coleccion de todos los elementos de un tipo
+	 * 
+	 * @return la coleccion de elementos que puede ser vacía
+	 */
+	public Collection<T> buscarTodos();
+	
+	public boolean modificar(T elemento);
+	
+//	public boolean modificarTodos(Collection<T> coleccion);
+	
+	public boolean eliminar(T elemento);
+
 }

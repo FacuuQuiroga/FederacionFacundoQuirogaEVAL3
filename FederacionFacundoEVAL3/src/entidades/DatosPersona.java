@@ -16,11 +16,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+import comparadores.ComparadorAlfabetico;
 import utils.ConexBD;
 import utils.Datos;
 import utils.Utilidades;
 import validaciones.Validaciones;
-import entidades.ComparadorDocumentacion;
 public class DatosPersona implements Comparable<DatosPersona> {
 	private long id;
 	private String nombre;

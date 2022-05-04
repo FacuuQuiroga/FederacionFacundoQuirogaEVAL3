@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.util.Collection;
 
+import dao.operacionesCRUD;
 import utils.ConexBD;
 
 public class Patrocinador implements operacionesCRUD<Patrocinador> {
@@ -174,8 +176,25 @@ public class Patrocinador implements operacionesCRUD<Patrocinador> {
 	 * @author Facu
 	 */
 	@Override
-	public long buscarPorID(Patrocinador p) {
-		return id;
-	
+	public Patrocinador buscarPorID(long id) {
+		return null;
+	}
+
+	@Override
+	public Collection<Patrocinador> buscarTodos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean modificar(Patrocinador elemento) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean eliminar(Patrocinador elemento) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

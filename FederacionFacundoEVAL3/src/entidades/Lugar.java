@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 
+import dao.operacionesCRUD;
 import utils.ConexBD;
 
 //Examen 1 Ejercicio 1
@@ -49,6 +51,7 @@ public enum Lugar implements operacionesCRUD<Lugar> {
 	public boolean isAirelibre() {
 		return airelibre;
 	}
+
 	/**
 	 * Ejercicio10 examen 10
 	 * 
@@ -68,8 +71,26 @@ public enum Lugar implements operacionesCRUD<Lugar> {
 	}
 
 	@Override
-	public long buscarPorID(Lugar elemento) {
+	public Lugar buscarPorID(long id) {
 		// TODO Auto-generated method stub
-		return 0;
+		return null;
+	}
+
+	@Override
+	public Collection<Lugar> buscarTodos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean modificar(Lugar elemento) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean eliminar(Lugar elemento) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

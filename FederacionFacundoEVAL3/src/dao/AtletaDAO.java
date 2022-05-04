@@ -1,160 +1,35 @@
-package entidades;
+package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Scanner;
+import java.util.List;
 
-import dao.operacionesCRUD;
+import entidades.Atleta;
+import entidades.DatosPersona;
 import utils.ConexBD;
 import utils.Datos;
-import utils.Utilidades;
-import validaciones.Validaciones;
 
-public class Atleta extends Participante implements operacionesCRUD<Atleta> {
-	private long idAtleta;
-	private float altura;
-	private float peso;
+public class AtletaDAO implements operacionesCRUD<Atleta> {
+	Connection conex;
 
-	private DatosPersona persona;
-	public Atleta() {}
-
-	public Atleta(long id, int dorsal, char calle, long idAtleta, float altura, float peso) {
-		super(id, dorsal, calle);
-		this.idAtleta = idAtleta;
-		this.altura = altura;
-		this.peso = peso;
-		this.persona = Datos.buscarPersonaPorId(id);
+	public AtletaDAO(Connection conex) {
+		if (this.conex == null)
+			this.conex = conex;
 	}
 
-	public Atleta(long id, int dorsal, char calle, long idAtleta, float altura, float peso, DatosPersona dp) {
-		super(id, dorsal, calle);
-		this.idAtleta = idAtleta;
-		this.altura = altura;
-		this.peso = peso;
-		this.persona = dp;
-	}
-
-	public Atleta(long idAtleta, float altura, float peso, DatosPersona dp) {
-		super();
-		this.idAtleta = idAtleta;
-		this.altura = altura;
-		this.peso = peso;
-		this.persona = dp;
-	}
-
-	public Atleta(long idParticipante, Atleta a, int dorsal, char calle) {
-		super(idParticipante, dorsal, calle);
-		this.idAtleta = a.idAtleta;
-		this.altura = a.altura;
-		this.peso = a.peso;
-		this.persona = Datos.buscarPersonaPorId(a.idAtleta);
-	}
-
-	@Override
-	public long getId() {
-		return idAtleta;
-	}
-
-	@Override
-	public void setId(long id) {
-		this.idAtleta = id;
-	}
-
-	public float getAltura() {
-		return altura;
-	}
-
-	public void setAltura(float altura) {
-		this.altura = altura;
-	}
-
-	public float getPeso() {
-		return peso;
-	}
-
-	public void setPeso(float peso) {
-		this.peso = peso;
-	}
-
-	public DatosPersona getPersona() {
-		return this.persona;
-	}
-
-	// Examen 5 Ejercicio 5
-	/***
-	 * Función que pregunta al usuario por cada uno de los campos para un nuevo
-	 * Atleta, los valida y si son correctos devuelve un objeto Atleta completo
-	 * 
-	 * @return un objeto Atleta completo válido o null si hubo algún error
-	 */
-	public static Atleta nuevoAtleta() {
-		Atleta ret = null;
-		long id = -1;
-		float altura = 0.0F;
-		float peso = 0.0F;
-		int elecc = -1;
-		DatosPersona dp = null;
-		Scanner in;
-		boolean valido = false;
-		do {
-			System.out.println("Introduzca el id del nuevo atleta:");
-			in = new Scanner(System.in);
-			id = in.nextInt();
-			if (id > 0)
-				valido = true;
-			else
-				System.out.println("Valor incorrecto para el identificador.");
-		} while (!valido);
-
-		valido = false;
-		do {
-			System.out.println("Introduzca el peso del nuevo atleta (xx,xx)Kgs:");
-			peso = Utilidades.leerFloat();
-			valido = Validaciones.validarPeso(peso);
-			if (!valido)
-				System.out.println("ERROR: El valor introducido para el peso no es válido.");
-		} while (!valido);
-
-		valido = false;
-		do {
-			System.out.println("Introduzca la altura del nuevo atleta (xx,xx)m:");
-			altura = Utilidades.leerFloat();
-			valido = Validaciones.validarAltura(altura);
-			if (!valido)
-				System.out.println("ERROR: El valor introducido para la altura no es válido.");
-		} while (!valido);
-
-		System.out.println("Introduzca ahora los datos personales:");
-		in = new Scanner(System.in);
-		dp = DatosPersona.nuevaPersona();
-
-		ret = new Atleta(id, altura, peso, dp);
-		return ret;
-	}
-
-	/***
-	 * Función que devuelve una cadena de caracteres con los datos del atleta con el
-	 * siguiente formato: <nombre> “ (” <documentacion> ”) del año
-	 * ”<fechaNac.año>’\t’<peso>”Kgs. ”<altura>”m.“
-	 */
-	@Override
-	public String toString() {
-		return "" + persona.getNombre() + " (" + persona.getNifnie().mostrar() + ") del año "
-				+ persona.getFechaNac().getYear() + "\t" + peso + "Kgs. " + altura + "m.";
-	}
-
-	
 	@Override
 	public boolean insertarConID(Atleta a) {
 		boolean ret = false;
-		Connection conex = ConexBD.establecerConexion();
+
 		String consultaInsertStr1 = "insert into personas(id, nombre, telefono, fechanac, nifnie) values (?,?,?,?,?)";
 		String consultaInsertStr3 = "insert into atletas(id, altura, peso, idequipo, idpersona) values (?,?,?,?,?)";
 		try {
-
+			if (this.conex == null || this.conex.isClosed())
+				this.conex = ConexBD.establecerConexion();
 			PreparedStatement pstmt = conex.prepareStatement(consultaInsertStr1);
 			pstmt.setLong(1, a.getPersona().getId());
 			pstmt.setString(2, a.getPersona().getNombre());
@@ -175,6 +50,8 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 					System.out.println("Se ha insertado correctamente el nuevo Atleta.");
 					ret = true;
 				}
+				if (conex != null)
+					conex.close();
 			}
 		} catch (SQLException e) {
 			System.out.println("Se ha producido una SQLException:" + e.getMessage());
@@ -188,11 +65,12 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 	@Override
 	public long insertarSinID(Atleta a) {
 		long ret = -1;
-		Connection conex = ConexBD.establecerConexion();
+		
 		String consultaInsertStr1 = "insert into personas(nombre, telefono, fechanac, nifnie) values (?,?,?,?)";
 		String consultaInsertStr3 = "insert into atletas(altura, peso, idequipo, idpersona) values (?,?,?,?)";
 		try {
-
+			if (this.conex == null || this.conex.isClosed())
+				this.conex = ConexBD.establecerConexion();
 			PreparedStatement pstmt = conex.prepareStatement(consultaInsertStr1);
 			pstmt.setString(1, a.getPersona().getNombre());
 			pstmt.setString(2, a.getPersona().getTelefono());
@@ -229,6 +107,8 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 								if (idatleta != -1) {
 									System.out.println(
 											"Se ha insertado correctamente el nuevo Atleta de id: " + idatleta);
+									if (conex != null)
+										conex.close();
 									return idatleta;
 								}
 							}
@@ -239,6 +119,8 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 				}
 				result.close();
 				pstmt2.close();
+				if (conex != null)
+					conex.close();
 			}
 		} catch (SQLException e) {
 			System.out.println("Se ha producido una SQLException:" + e.getMessage());
@@ -248,32 +130,93 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 
 		return ret;
 	}
-	/**
-	 * Ejercicio 10 apartado b examen 10
-	 * 
-	 * @author Facu
-	 */
-		@Override
+
+	/// Examen 10 ejercicio 10
+	@Override
 	public Atleta buscarPorID(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Atleta ret = null;
+		String consultaInsertStr = "select * FROM atletas WHERE id=?";
+		try {
+			if (this.conex == null || this.conex.isClosed())
+				this.conex = ConexBD.establecerConexion();
+			PreparedStatement pstmt = conex.prepareStatement(consultaInsertStr);
+			pstmt.setLong(1, id);
+			ResultSet result = pstmt.executeQuery();
+			while (result.next()) {
+				long idBD = result.getLong("id");
+				long idPersona = result.getLong("idpersona");
+				long idEquipo = result.getLong("idequipo"); //// puede ser null
+				float altura = result.getFloat("altura");
+				float peso = result.getFloat("peso");
+				ret = new Atleta();
+				ret.setIdAtleta(idBD);
+				ret.setAltura(altura);
+				ret.setPeso(peso);
+				DatosPersona dp = Datos.buscarPersonaPorId(idPersona);
+				ret.setPersona(dp);
+				/// TO-DO: Habrá que arreglar esta parte cuando se incluya la información del
+				/// equipo
+			}
+			if (conex != null)
+				conex.close();
+		} catch (SQLException e) {
+			System.out.println("Se ha producido una SQLException:" + e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("Se ha producido una Exception:" + e.getMessage());
+			e.printStackTrace();
+		}
+		return ret;
 	}
 
 	@Override
 	public Collection<Atleta> buscarTodos() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Atleta> todos = new ArrayList<>();
+		String consultaInsertStr = "select * FROM atletas";
+		try {
+			if (this.conex == null || this.conex.isClosed())
+				this.conex = ConexBD.establecerConexion();
+			PreparedStatement pstmt = conex.prepareStatement(consultaInsertStr);
+			ResultSet result = pstmt.executeQuery();
+			while (result.next()) {
+				Atleta atleta;
+				long idBD = result.getLong("id");
+				long idPersona = result.getLong("idpersona");
+				long idEquipo = result.getLong("idequipo"); //// puede ser null
+				float altura = result.getFloat("altura");
+				float peso = result.getFloat("peso");
+				atleta = new Atleta();
+				atleta.setIdAtleta(idBD);
+				atleta.setAltura(altura);
+				atleta.setPeso(peso);
+				DatosPersona dp = Datos.buscarPersonaPorId(idPersona);
+				atleta.setPersona(dp);
+				/// TODO: Habrá que arreglar esta parte cuando se incluya la información del
+				/// equipo
+				todos.add(atleta);
+			}
+			if (conex != null)
+				conex.close();
+		} catch (SQLException e) {
+			System.out.println("Se ha producido una SQLException:" + e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("Se ha producido una Exception:" + e.getMessage());
+			e.printStackTrace();
+		}
+		return todos;
 	}
 
 	@Override
 	public boolean modificar(Atleta elemento) {
-		// TODO Auto-generated method stub
+		// TODO Esbozo de método generado automáticamente
 		return false;
 	}
 
 	@Override
 	public boolean eliminar(Atleta elemento) {
-		// TODO Auto-generated method stub
+		// TODO Esbozo de método generado automáticamente
 		return false;
 	}
+
 }
