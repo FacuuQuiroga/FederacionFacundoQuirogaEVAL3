@@ -12,9 +12,11 @@ public abstract class Metal {
 	public boolean asignada = false;
 	
 	public Metal() {
+		super();
 	}
 	
 	public Metal(LocalDate f, boolean b) {
+		super();
 		this.fecha = f;
 		this.asignada = b;
 	}
