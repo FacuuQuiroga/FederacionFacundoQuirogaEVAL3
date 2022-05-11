@@ -12,6 +12,13 @@ import utils.Datos;
 
 public class ManagerDAO implements operacionesCRUD<Manager>{
 
+	
+	Connection conex;
+
+	public ManagerDAO(Connection conex) {
+		if (this.conex == null)
+			this.conex = conex;
+	}
 	/// Examen 10 ejercicio 11
 		@Override
 		public boolean insertarConID(Manager m) {

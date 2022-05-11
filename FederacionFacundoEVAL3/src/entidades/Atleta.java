@@ -276,4 +276,17 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public long getIdAtleta() {
+		return idAtleta;
+	}
+
+	public void setIdAtleta(long idAtleta) {
+		this.idAtleta = idAtleta;
+	}
+
+	public void setPersona(DatosPersona persona) {
+		this.persona = persona;
+	}
+	
 }

@@ -21,6 +21,7 @@ import utils.ConexBD;
 import utils.Datos;
 import utils.Utilidades;
 import validaciones.Validaciones;
+
 public class DatosPersona implements Comparable<DatosPersona> {
 	private long id;
 	private String nombre;
@@ -28,6 +29,10 @@ public class DatosPersona implements Comparable<DatosPersona> {
 	private LocalDate fechaNac;
 
 	private Documentacion nifnie; // Examen 2 Ejercicio 3.2
+
+	public DatosPersona() {
+
+	}
 
 	public DatosPersona(long id, String nombre, String telefono, LocalDate fechaNac) {
 		super();
@@ -189,13 +194,13 @@ public class DatosPersona implements Comparable<DatosPersona> {
 			Iterator<DatosPersona> it = dp.iterator();
 
 			while (it.hasNext()) {
-				DatosPersona per =it.next();
-				//imprime bien todos los datos de atleta pero no los guarda en el fichero txt
+				DatosPersona per = it.next();
+				// imprime bien todos los datos de atleta pero no los guarda en el fichero txt
 				System.out.println(per.data());
 				bw.write(per.data() + "\n");
 
 			}
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -203,21 +208,22 @@ public class DatosPersona implements Comparable<DatosPersona> {
 
 	/**
 	 * Ejercicio 2 apartado A examen 9
+	 * 
 	 * @author Facu
 	 */
 	@Override
 	public int compareTo(DatosPersona o) {
-		
+
 		if (fechaNac.isAfter(o.fechaNac))
 			return -1;
-		else if (fechaNac.isBefore(o.fechaNac)) 
+		else if (fechaNac.isBefore(o.fechaNac))
 			return 1;
 		else
 			return this.nifnie.compareTo(o.nifnie);
 	}
 
 	/// Examen 9 ejercicio 2-B
-	//@autor luis
+	// @autor luis
 	public static boolean insertarPersonas() {
 		boolean ret = false;
 		Connection conex = ConexBD.establecerConexion();
