@@ -283,6 +283,14 @@ public class NuevoAtletaGUI extends JFrame {
 		contentPane.add(btnAceptar);
 
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String mensaje = "Cancelando, Volviendo...";
+				String titulo = "Aviso!";
+				JOptionPane.showMessageDialog(null, mensaje, titulo, JOptionPane.OK_CANCEL_OPTION);
+				System.exit(0);
+			}
+		});
 		btnCancelar.setBounds(498, 391, 89, 23);
 		contentPane.add(btnCancelar);
 
