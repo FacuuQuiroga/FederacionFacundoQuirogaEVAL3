@@ -13,6 +13,8 @@ public class Responsable {
 	private LocalTime horarioini;
 	private LocalTime horariofin;
 	DatosPersona persona;
+	private java.time.LocalTime horarioIni;
+	private java.time.LocalTime horarioFin;
 
 	public Responsable() {
 	}
@@ -24,6 +26,8 @@ public class Responsable {
 		this.horarioini = hi;
 		this.persona = dp;
 	}
+	
+	
 
 	public long getId() {
 		return id;
@@ -64,6 +68,23 @@ public class Responsable {
 	public void setPersona(DatosPersona persona) {
 		this.persona = persona;
 	}
+	
+	public java.time.LocalTime getHorarioIni() {
+		return horarioIni;
+	}
+
+	public void setHorarioIni(java.time.LocalTime horarioIni) {
+		this.horarioIni = horarioIni;
+	}
+
+	public java.time.LocalTime getHorarioFin() {
+		return horarioFin;
+	}
+
+	public void setHorarioFin(java.time.LocalTime horarioFin) {
+		this.horarioFin = horarioFin;
+	}
+
 	/// Examen 10 Ejercicio 2
 	public static Responsable nuevoResponsable() {
 		Responsable ret = null;

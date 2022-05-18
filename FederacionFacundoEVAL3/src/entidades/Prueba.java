@@ -138,12 +138,30 @@ public class Prueba {
 		this.lugar = lugar;
 	}
 
+	
+	
+	public Colegiado[] getArbitraje() {
+		return arbitraje;
+	}
+
+	public void setArbitraje(Colegiado[] arbitraje) {
+		this.arbitraje = arbitraje;
+	}
+
+	public Patrocinador getPatrocinador() {
+		return patrocinador;
+	}
+
+	public void setPatrocinador(Patrocinador patrocinador) {
+		this.patrocinador = patrocinador;
+	}
+
 	/**
-	 * Función que establece el equipo arbitral de la prueba (3 colegiados)
+	 * FunciÃ³n que establece el equipo arbitral de la prueba (3 colegiados)
 	 * 
 	 * @param arbitros array de 3 Colegiado que componen el equipo arbitral de la
 	 *                 prueba
-	 * @return true si se estableció con éxito el equipo arbitral de la prueba o
+	 * @return true si se estableciÃ³ con Ã©xito el equipo arbitral de la prueba o
 	 *         false en caso contrario
 	 */
 	public boolean setEquipoArbitral(Colegiado[] arbitros) {
@@ -160,7 +178,7 @@ public class Prueba {
 	/**
 	 * Funcion que indica si hay establecido un equipo arbitral para la prueba
 	 * 
-	 * @return true si sí haya establecido equipo arbitral par la prueba y false en
+	 * @return true si sÃ­ haya establecido equipo arbitral par la prueba y false en
 	 *         caso contrario
 	 */
 	public boolean hayEquipoArbitral() {
@@ -188,10 +206,10 @@ public class Prueba {
 	}
 
 	/***
-	 * Funcion que indica si la prueba está cerrada, es decir, si su resultado es
+	 * Funcion que indica si la prueba estÃ¡ cerrada, es decir, si su resultado es
 	 * definitivo
 	 * 
-	 * @return true si la prueba está cerrada o false en caso contrario
+	 * @return true si la prueba estÃ¡ cerrada o false en caso contrario
 	 */
 	public boolean cerrada() {
 		if (this.resultado != null)
@@ -201,7 +219,7 @@ public class Prueba {
 	}
 
 	/**
-	 * Funcion que establece el resultado definitivo de la prueba, cerrándola. En
+	 * Funcion que establece el resultado definitivo de la prueba, cerrÃ¡ndola. En
 	 * caso de error avisa al usuario por la salida estandar del sistema
 	 * 
 	 * @param r objeto de tipo Resultado que debe ser definitivo
@@ -218,15 +236,15 @@ public class Prueba {
 
 	/// Examen 6 Ejercicio 4
 	/***
-	 * Función que devuelve una cadena de caracteres con la siguiente estructura:
-	 * <idPrueba>”. ”<nombre>” (”<fecha(dd/mm/YYYY)>” en <lugarPrueba>) de tipo “
-	 * <individual/colectiva>“ Si la prueba dispone de equipo arbitral, se mostrarán
-	 * los nombres del equipo arbitral. Además, si está cerrada, se mostrará el
-	 * Resultado de la misma, de esta forma: “Primer puesto: “<idParticipante>”, con
-	 * el dorsal “<dorsal>” por la calle “<calle>” Oro#”<idOro>”.” “Segundo puesto:
-	 * “<idParticipante>”, con el dorsal “<dorsal>” por la calle “<calle>”
-	 * Plata#<idPlata> “Tercer puesto: “<idParticipante>”, con el dorsal “<dorsal>”
-	 * por la calle “<calle> Bronce#<idBronc>
+	 * FunciÃ³n que devuelve una cadena de caracteres con la siguiente estructura:
+	 * <idPrueba>â€�. â€�<nombre>â€� (â€�<fecha(dd/mm/YYYY)>â€� en <lugarPrueba>) de tipo â€œ
+	 * <individual/colectiva>â€œ Si la prueba dispone de equipo arbitral, se mostrarÃ¡n
+	 * los nombres del equipo arbitral. AdemÃ¡s, si estÃ¡ cerrada, se mostrarÃ¡ el
+	 * Resultado de la misma, de esta forma: â€œPrimer puesto: â€œ<idParticipante>â€�, con
+	 * el dorsal â€œ<dorsal>â€� por la calle â€œ<calle>â€� Oro#â€�<idOro>â€�.â€� â€œSegundo puesto:
+	 * â€œ<idParticipante>â€�, con el dorsal â€œ<dorsal>â€� por la calle â€œ<calle>â€�
+	 * Plata#<idPlata> â€œTercer puesto: â€œ<idParticipante>â€�, con el dorsal â€œ<dorsal>â€�
+	 * por la calle â€œ<calle> Bronce#<idBronc>
 	 * 
 	 */
 	@Override
@@ -264,7 +282,7 @@ public class Prueba {
 			id = in.nextInt();
 			valido = Validaciones.validarId(id);
 			if (!valido)
-				System.out.println("ERROR: Valor introducido para el identificador de la prueba inválido.");
+				System.out.println("ERROR: Valor introducido para el identificador de la prueba invÃ¡lido.");
 			else
 				valido = true;
 		} while (!valido);
@@ -275,7 +293,7 @@ public class Prueba {
 			nombre = in.nextLine();
 			valido = Validaciones.validarNombre(nombre);
 			if (!valido)
-				System.out.println("ERROR: Valor introducido para el nombre de la prueba inválido.");
+				System.out.println("ERROR: Valor introducido para el nombre de la prueba invÃ¡lido.");
 			else
 				valido = true;
 		} while (!valido);
@@ -283,7 +301,7 @@ public class Prueba {
 		System.out.println("Introduzca la fecha de la nueva prueba");
 		LocalDate fecha = Utilidades.leerFecha();
 
-		System.out.println("¿Es la nueva prueba de tipo individual?");
+		System.out.println("Â¿Es la nueva prueba de tipo individual?");
 		boolean ind = Utilidades.leerBoolean();
 
 		valido = false;

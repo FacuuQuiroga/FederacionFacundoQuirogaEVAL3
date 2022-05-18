@@ -169,8 +169,8 @@ public class Utilidades extends Validaciones {
 	 */
 	public static String quitarEspaciosTildes(String s) {
 		String ret = s.trim();
-		return ret.replace('√°', 'a').replace('√©', 'e').replace('√≠', 'i').replace('√≥', 'o').replace('√∫', 'u')
-				.replace('√Å', 'A').replace('√â', 'E').replace('√ç', 'I').replace('√ì', 'O').replace('√ö', 'U');
+		return ret.replace('√', 'a').replace('√', 'e').replace('√', 'i').replace('√', 'o').replace('√', 'u')
+				.replace('√', 'A').replace('√', 'E').replace('√', 'I').replace('√', 'O').replace('√', 'U');
 	}
 
 	public static String removeDiacriticalMarks(String string) {

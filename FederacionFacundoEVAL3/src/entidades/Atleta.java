@@ -18,8 +18,12 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 	private float altura;
 	private float peso;
 
+	private long idEquipo;
+
 	private DatosPersona persona;
-	public Atleta() {}
+
+	public Atleta() {
+	}
 
 	public Atleta(long id, int dorsal, char calle, long idAtleta, float altura, float peso) {
 		super(id, dorsal, calle);
@@ -85,10 +89,10 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 
 	// Examen 5 Ejercicio 5
 	/***
-	 * Función que pregunta al usuario por cada uno de los campos para un nuevo
+	 * FunciÃ³n que pregunta al usuario por cada uno de los campos para un nuevo
 	 * Atleta, los valida y si son correctos devuelve un objeto Atleta completo
 	 * 
-	 * @return un objeto Atleta completo válido o null si hubo algún error
+	 * @return un objeto Atleta completo vÃ¡lido o null si hubo algÃºn error
 	 */
 	public static Atleta nuevoAtleta() {
 		Atleta ret = null;
@@ -115,7 +119,7 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 			peso = Utilidades.leerFloat();
 			valido = Validaciones.validarPeso(peso);
 			if (!valido)
-				System.out.println("ERROR: El valor introducido para el peso no es válido.");
+				System.out.println("ERROR: El valor introducido para el peso no es vÃ¡lido.");
 		} while (!valido);
 
 		valido = false;
@@ -124,7 +128,7 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 			altura = Utilidades.leerFloat();
 			valido = Validaciones.validarAltura(altura);
 			if (!valido)
-				System.out.println("ERROR: El valor introducido para la altura no es válido.");
+				System.out.println("ERROR: El valor introducido para la altura no es vÃ¡lido.");
 		} while (!valido);
 
 		System.out.println("Introduzca ahora los datos personales:");
@@ -136,17 +140,16 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 	}
 
 	/***
-	 * Función que devuelve una cadena de caracteres con los datos del atleta con el
-	 * siguiente formato: <nombre> “ (” <documentacion> ”) del año
-	 * ”<fechaNac.año>’\t’<peso>”Kgs. ”<altura>”m.“
+	 * FunciÃ³n que devuelve una cadena de caracteres con los datos del atleta con
+	 * el siguiente formato: <nombre> â€œ (â€� <documentacion> â€�) del aÃ±o
+	 * â€�<fechaNac.aÃ±o>â€™\tâ€™<peso>â€�Kgs. â€�<altura>â€�m.â€œ
 	 */
 	@Override
 	public String toString() {
-		return "" + persona.getNombre() + " (" + persona.getNifnie().mostrar() + ") del año "
+		return "" + persona.getNombre() + " (" + persona.getNifnie().mostrar() + ") del aÃ±o "
 				+ persona.getFechaNac().getYear() + "\t" + peso + "Kgs. " + altura + "m.";
 	}
 
-	
 	@Override
 	public boolean insertarConID(Atleta a) {
 		boolean ret = false;
@@ -248,12 +251,13 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 
 		return ret;
 	}
+
 	/**
 	 * Ejercicio 10 apartado b examen 10
 	 * 
 	 * @author Facu
 	 */
-		@Override
+	@Override
 	public Atleta buscarPorID(long id) {
 		// TODO Auto-generated method stub
 		return null;
@@ -288,5 +292,13 @@ public class Atleta extends Participante implements operacionesCRUD<Atleta> {
 	public void setPersona(DatosPersona persona) {
 		this.persona = persona;
 	}
-	
+
+	public long getIdEquipo() {
+		return idEquipo;
+	}
+
+	public void setIdEquipo(long idEquipo) {
+		this.idEquipo = idEquipo;
+	}
+
 }
